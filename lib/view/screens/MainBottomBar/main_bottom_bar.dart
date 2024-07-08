@@ -60,6 +60,13 @@ class _MainBottomBarState extends State<MainBottomBar> {
               onTap: _switchNavPage,
             ),
             CustomNavItem(
+              index: 3,
+              selectedIndex: _selectedIndex,
+              icon: Icons.timelapse_outlined,
+              label: "Progress",
+              onTap: _switchNavPage,
+            ),
+            CustomNavItem(
               index: 1,
               selectedIndex: _selectedIndex,
               icon: Icons.done_all,
@@ -73,13 +80,7 @@ class _MainBottomBarState extends State<MainBottomBar> {
               label: "Cancelled",
               onTap: _switchNavPage,
             ),
-            CustomNavItem(
-              index: 3,
-              selectedIndex: _selectedIndex,
-              icon: Icons.timelapse_outlined,
-              label: "Progress",
-              onTap: _switchNavPage,
-            ),
+
           ],
         ),
       ),
