@@ -55,14 +55,14 @@ class _MainBottomBarState extends State<MainBottomBar> {
             CustomNavItem(
               index: 0,
               selectedIndex: _selectedIndex,
-              icon: Icons.task,
+              icon: Icons.add_task,
               label: "New Task",
               onTap: _switchNavPage,
             ),
             CustomNavItem(
               index: 1,
               selectedIndex: _selectedIndex,
-              icon: Icons.done,
+              icon: Icons.done_all,
               label: "Completed",
               onTap: _switchNavPage,
             ),
