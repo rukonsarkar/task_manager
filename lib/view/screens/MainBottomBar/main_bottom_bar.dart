@@ -36,11 +36,9 @@ class _MainBottomBarState extends State<MainBottomBar> {
       body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
         clipBehavior: Clip.hardEdge,
-        margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 45),
         decoration: BoxDecoration(
           color: AppColor.white,
-          borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
