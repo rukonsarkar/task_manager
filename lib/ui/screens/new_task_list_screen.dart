@@ -158,12 +158,12 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
 
   Future<void> _deleteTaskItem(int index) async {
     final String? _taskId = newTaskListModel!.taskList![index].sId;
-    showSnackBarMessage(context, "Deleting....", true);
+    showSnackBarMessage(context, "Task is deleting....", true);
 
     NetworkResponse response =
         await NetworkCaller.getRequest(url: Urls.deleteTask(_taskId!));
     if (response.isSuccess) {
-      showSnackBarMessage(context, "Task Deleted", true);
+      showSnackBarMessage(context, "Task Deleted Successfully", true);
       newTaskListModel?.taskList?.removeAt(index);
       _getTaskCountByStatus(false);
       setState(() {});
@@ -178,11 +178,11 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
     if (status == "New") {
       showSnackBarMessage(context, "You are in 'New status'.", false);
     } else {
-      showSnackBarMessage(context, "status updating.....", true);
+      showSnackBarMessage(context, "Status Updating.....", true);
       NetworkResponse response = await NetworkCaller.getRequest(
           url: Urls.UpgradeTask(_taskId!, status));
       if (response.isSuccess) {
-        showSnackBarMessage(context, "Task Update", true);
+        showSnackBarMessage(context, "Task Updated Successfully", true);
         newTaskListModel?.taskList?.removeAt(index);
         _getTaskCountByStatus(false);
         setState(() {});

@@ -87,7 +87,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
     NetworkResponse response =
         await NetworkCaller.getRequest(url: Urls.deleteTask(_taskId!));
     if (response.isSuccess) {
-      showSnackBarMessage(context, "Task Deleted", true);
+      showSnackBarMessage(context, "Task Deleted Successfully", true);
       progressTaskListModel?.taskList?.removeAt(index);
       setState(() {});
     } else {
@@ -99,13 +99,13 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
     if (status == "Progress") {
       showSnackBarMessage(context, "You are in 'Progress status'.", false);
     } else {
-      showSnackBarMessage(context, "status updating.....", true);
+      showSnackBarMessage(context, "Status updating.....", true);
       final String? _taskId = progressTaskListModel!.taskList![index].sId;
 
       NetworkResponse response = await NetworkCaller.getRequest(
           url: Urls.UpgradeTask(_taskId!, status));
       if (response.isSuccess) {
-        showSnackBarMessage(context, "Task Update", true);
+        showSnackBarMessage(context, "Task Updated Successfully", true);
         progressTaskListModel?.taskList?.removeAt(index);
         setState(() {});
       } else {
