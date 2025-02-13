@@ -21,7 +21,7 @@ class TaskItemWidget extends StatelessWidget {
   ];
   final List<Color> dropdownItemsColor = [
     Colors.lightBlueAccent,
-    Colors.orange,
+    Colors.purpleAccent,
     Colors.redAccent,
     AppColors.themColor,
   ];
@@ -90,7 +90,7 @@ class TaskItemWidget extends StatelessWidget {
                         dropdownColor: Colors.white,
                         underline: SizedBox(),
                         icon: Icon(
-                          Icons.edit_outlined,
+                          Icons.note_alt_outlined,
                           size: 20,
                           color: Colors.green,
                         ),
@@ -123,7 +123,7 @@ class TaskItemWidget extends StatelessWidget {
                       IconButton(
                         onPressed: ontabDetele,
                         icon: const Icon(
-                          Icons.delete_forever_outlined,
+                          Icons.delete,
                           color: Colors.redAccent,
                           size: 20,
                         ),

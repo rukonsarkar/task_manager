@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/ui/screens/progress_task_list_screen.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
-import 'package:get/get.dart';
 
 import 'canceled_task_list_screen.dart';
 import 'completed_task_list_screen.dart';
 import 'new_task_list_screen.dart';
-import 'package:task_manager/routes/app_routes.dart';
-import 'package:task_manager/controllers/navigation_controller.dart';
 
-class MainBottomNavScreen extends GetView<NavigationController> {
+class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
 
   static String name = '/home';
+
+  @override
+  State<MainBottomNavScreen> createState() => _MainBottomNavScreenState();
+}
+
+class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
+  RxInt _selectedIndex = 0.obs;
 
   final List<Widget> _screens = const [
     NewTaskListScreen(),
@@ -23,27 +28,29 @@ class MainBottomNavScreen extends GetView<NavigationController> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
-    
     return Scaffold(
-      body: Obx(() => _screens[controller.selectedIndex]),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        currentIndex: controller.selectedIndex,
-        selectedItemColor: AppColors.themColor,
-        onTap: controller.changeIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_task), label: 'New Task'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.task_alt_rounded), label: 'Completed'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.cancel_outlined), label: 'Canceled'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.label_important_outline), label: 'Progress'),
-        ],
-      )),
+      body: Obx(() => _screens[_selectedIndex.value]),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          currentIndex: _selectedIndex.value,
+          selectedItemColor: AppColors.themColor,
+          onTap: (index) {
+            _selectedIndex.value = index;
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add_task), label: 'New Task'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.task_alt_rounded), label: 'Completed'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.cancel_outlined), label: 'Canceled'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.label_important_outline), label: 'Progress'),
+          ],
+        ),
+      ),
     );
   }
 }
