@@ -4,11 +4,13 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
+import 'package:get/get.dart';
 
 import '../../data/models/user_model.dart';
 import '../controller/auth_controller.dart';
 import '../widgets/task_widgets.dart';
 import 'main_bottom_nav_screen.dart';
+import 'package:task_manager/routes/app_routes.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -156,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.pop(context);
+                Get.back();
               },
           )
         ],
@@ -233,11 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       String token = response.responseData!['token'];
       UserModel userModel = UserModel.fromJson(response.responseData!['data']);
       await AuthController.saveUserData(token, userModel);
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        MainBottomNavScreen.name,
-        (route) => false,
-      );
+      Get.offAllNamed(AppRoutes.mainBottomNav);
     } else {
       Navigator.pop(context);
       Navigator.pop(context);

@@ -4,9 +4,11 @@ import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
+import 'package:get/get.dart';
 
 import '../widgets/task_widgets.dart';
 import 'forgot_password_otp_verification.dart';
+import 'package:task_manager/routes/app_routes.dart';
 
 class ForgorPasswordEmailVerification extends StatefulWidget {
   const ForgorPasswordEmailVerification({super.key});
@@ -126,11 +128,7 @@ class _ForgorPasswordEmailVerificationState
       if (response.responseData!['status'] == 'fail') {
         showSnackBarMessage(context, "No User Found", false);
       } else {
-        Navigator.pushReplacementNamed(
-          context,
-          ForgorPasswordOtpVerification.name,
-          arguments: _gmailTEController.text.trim(),
-        );
+        Get.toNamed(AppRoutes.forgotPasswordOtp, arguments: _gmailTEController.text.trim());
       }
     } else {
       showSnackBarMessage(context, response.errorMessage, false);

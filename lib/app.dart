@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/screens/add_new_task_screen.dart';
-import 'package:task_manager/ui/screens/forgor_password_email_verification.dart';
-import 'package:task_manager/ui/screens/forgot_password_otp_verification.dart';
-import 'package:task_manager/ui/screens/main_bottom_nav_screen.dart';
-import 'package:task_manager/ui/screens/recovary_password_screen.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/ui/screens/splash_screen.dart';
 import 'package:task_manager/ui/screens/sign_in_screen.dart';
 import 'package:task_manager/ui/screens/sign_up_screens.dart';
-import 'package:task_manager/ui/screens/splash_screen.dart';
+import 'package:task_manager/ui/screens/forgor_password_email_verification.dart';
+import 'package:task_manager/ui/screens/forgot_password_otp_verification.dart';
+import 'package:task_manager/ui/screens/recovary_password_screen.dart';
+import 'package:task_manager/ui/screens/main_bottom_nav_screen.dart';
+import 'package:task_manager/ui/screens/add_new_task_screen.dart';
 import 'package:task_manager/ui/screens/update_profile_screen.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
+import 'package:task_manager/routes/app_routes.dart';
+import 'package:task_manager/bindings/app_binding.dart';
 
 class TaskManagerApp extends StatelessWidget {
   const TaskManagerApp({super.key});
 
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      title: 'Task Manager',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'poppins',
         colorSchemeSeed: AppColors.themColor,
         textTheme: TextTheme(
           headlineMedium: TextStyle(
@@ -80,38 +84,37 @@ class TaskManagerApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        late Widget widget;
-        if (settings.name == SplashScreen.name) {
-          widget = const SplashScreen();
-        } else if (settings.name == SignInScreen.name) {
-          widget = const SignInScreen();
-        } else if (settings.name == SignUpScreen.name) {
-          widget = const SignUpScreen();
-        } else if (settings.name == ForgorPasswordEmailVerification.name) {
-          widget = const ForgorPasswordEmailVerification();
-        } else if (settings.name == ForgorPasswordOtpVerification.name) {
-          final String gmail = settings.arguments as String;
-          widget = ForgorPasswordOtpVerification(
-            gmail: gmail,
-          );
-        } else if (settings.name == RecovaryPasswordScreen.name) {
-          final Map emailAndOtp = settings.arguments as Map;
-          widget = RecovaryPasswordScreen(
-            emailAndOtp: emailAndOtp,
-          );
-        } else if (settings.name == MainBottomNavScreen.name) {
-          widget = const MainBottomNavScreen();
-        } else if (settings.name == AddNewTaskScreen.name) {
-          widget = const AddNewTaskScreen();
-        } else if (settings.name == UpdateProfileScreen.name) {
-          widget = const UpdateProfileScreen();
-        }
-        return MaterialPageRoute(
-          builder: (context) => widget,
-        );
-      },
+      initialRoute: AppRoutes.splash,
+      initialBinding: AppBinding(),
+      getPages: [
+        GetPage(name: AppRoutes.splash, page: () => const SplashScreen()),
+        GetPage(name: AppRoutes.signIn, page: () => const SignInScreen()),
+        GetPage(name: AppRoutes.signUp, page: () => const SignUpScreen()),
+        GetPage(
+          name: AppRoutes.forgotPasswordEmail, 
+          page: () => const ForgorPasswordEmailVerification()
+        ),
+        GetPage(
+          name: AppRoutes.forgotPasswordOtp,
+          page: () => ForgorPasswordOtpVerification(gmail: Get.arguments)
+        ),
+        GetPage(
+          name: AppRoutes.recoveryPassword,
+          page: () => RecovaryPasswordScreen(emailAndOtp: Get.arguments)
+        ),
+        GetPage(
+          name: AppRoutes.mainBottomNav, 
+          page: () => const MainBottomNavScreen()
+        ),
+        GetPage(
+          name: AppRoutes.addNewTask, 
+          page: () => const AddNewTaskScreen()
+        ),
+        GetPage(
+          name: AppRoutes.updateProfile, 
+          page: () => const UpdateProfileScreen()
+        ),
+      ],
     );
   }
 }

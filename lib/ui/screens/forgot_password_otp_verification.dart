@@ -7,6 +7,8 @@ import 'package:task_manager/ui/screens/recovary_password_screen.dart';
 import 'package:task_manager/ui/screens/sign_in_screen.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/routes/app_routes.dart';
 
 import '../widgets/task_widgets.dart';
 
@@ -125,11 +127,7 @@ class _ForgorPasswordOtpVerificationState
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  SignInScreen.name,
-                  (route) => false,
-                );
+                Get.offAllNamed(AppRoutes.signIn);
               },
           )
         ],
@@ -147,7 +145,7 @@ class _ForgorPasswordOtpVerificationState
 
   Future<void> _otpVerify() async {
     final String otp = _otpTEController.text.trim();
-    final String gmail = widget.gmail;
+    final String gmail = Get.arguments as String;
 
     final Map gmailAndOtp = {'gmail': gmail, 'otp': otp};
 
@@ -158,17 +156,28 @@ class _ForgorPasswordOtpVerificationState
     _inProgress = true;
     if (response.isSuccess) {
       if (response.responseData!['status'] == "fail") {
-        showSnackBarMessage(context, 'Invalid OTP Code', false);
+        Get.snackbar(
+          'Error',
+          'Invalid OTP Code',
+          backgroundColor: Colors.red.shade100,
+          colorText: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         _otpTEController.clear();
       } else {
-        Navigator.pushReplacementNamed(
-          context,
-          RecovaryPasswordScreen.name,
-          arguments: gmailAndOtp,
+        Get.toNamed(
+          AppRoutes.recoveryPassword,
+          arguments: {'email': gmail, 'otp': otp}
         );
       }
     } else {
-      showSnackBarMessage(context, response.errorMessage, false);
+      Get.snackbar(
+        'Error',
+        response.errorMessage,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
     setState(() {});
   }

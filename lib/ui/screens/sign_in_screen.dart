@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/sign_up_screens.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
+import 'package:get/get.dart';
 
 import '../../data/models/user_model.dart';
 import '../../data/services/network_caller.dart';
@@ -11,6 +12,7 @@ import '../controller/auth_controller.dart';
 import '../widgets/task_widgets.dart';
 import 'forgor_password_email_verification.dart';
 import 'main_bottom_nav_screen.dart';
+import 'package:task_manager/routes/app_routes.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -94,10 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              ForgorPasswordEmailVerification.name,
-                            );
+                            Get.toNamed(AppRoutes.forgotPasswordEmail);
                           },
                           child: Text(
                             'Forgot Password?',
@@ -134,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.pushNamed(context, SignUpScreen.name);
+                Get.toNamed(AppRoutes.signUp);
               },
           )
         ],
@@ -166,11 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
       String token = response.responseData!['token'];
       UserModel userModel = UserModel.fromJson(response.responseData!['data']);
       await AuthController.saveUserData(token, userModel);
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        MainBottomNavScreen.name,
-        (route) => false,
-      );
+      Get.offAllNamed(AppRoutes.mainBottomNav);
     } else {
       showSnackBarMessage(
           context, 'Email/Password is invalid! Try again.', false);

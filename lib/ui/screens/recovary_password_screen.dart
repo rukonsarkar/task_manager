@@ -2,9 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/routes/app_routes.dart';
 import 'package:task_manager/ui/screens/sign_in_screen.dart';
 import 'package:task_manager/ui/utils/app_colors.dart';
 import 'package:task_manager/ui/widgets/snack_bar_massage.dart';
+import 'package:get/get.dart';
 
 import '../widgets/task_widgets.dart';
 
@@ -119,7 +121,7 @@ class _RecovaryPasswordScreenState extends State<RecovaryPasswordScreen> {
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.pop(context);
+                Get.back();
               },
           )
         ],
@@ -134,7 +136,13 @@ class _RecovaryPasswordScreenState extends State<RecovaryPasswordScreen> {
         setState(() {});
         recovaryPassword();
       } else {
-        showSnackBarMessage(context, "No Match Password", false);
+        Get.snackbar(
+          'Error',
+          "No Match Password",
+          backgroundColor: Colors.red.shade100,
+          colorText: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
         _passTEController.clear();
         _confirmpassTEController.clear();
       }
@@ -142,23 +150,32 @@ class _RecovaryPasswordScreenState extends State<RecovaryPasswordScreen> {
   }
 
   Future<void> recovaryPassword() async {
+    final Map emailAndOtp = Get.arguments as Map;
     Map<String, dynamic> recponseBody = {
-      "email": widget.emailAndOtp['gmail'],
-      "OTP": widget.emailAndOtp['otp'],
+      "email": emailAndOtp['gmail'],
+      "OTP": emailAndOtp['otp'],
       "password": _confirmpassTEController.text
     };
     NetworkResponse response = await NetworkCaller.postRequest(
         url: Urls.recoverResetPass, body: recponseBody);
     if (response.isSuccess) {
-      showSnackBarMessage(context, "Password recovary success", true);
-      Future.delayed(Duration(seconds: 1));
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        SignInScreen.name,
-        (route) => false,
+      Get.snackbar(
+        'Success',
+        "Password recovery successful",
+        backgroundColor: Colors.green.shade100,
+        colorText: Colors.green,
+        snackPosition: SnackPosition.BOTTOM,
       );
+      Future.delayed(Duration(seconds: 1));
+      Get.offAllNamed(AppRoutes.signIn);
     } else {
-      showSnackBarMessage(context, response.errorMessage, false);
+      Get.snackbar(
+        'Error',
+        response.errorMessage,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
